@@ -3,6 +3,7 @@ package com.java8;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Solution_1 {
@@ -28,7 +29,7 @@ public class Solution_1 {
 		employeeList.add(new Employee(255, "Ali Baig", 23, "Male", "Infrastructure", 2018, 12700.0));
 		employeeList.add(new Employee(266, "Sanvi Pandey", 26, "Female", "Product Development", 2015, 28900.0));
 		employeeList.add(new Employee(277, "Anuj Chettiar", 31, "Male", "Product Development", 2012, 35700.0));
-		
+// entry-> System.out.println(entry.getKey()+"------------"+entry.getValue())
 		
 		// How many male and female employees are there in org?
 		System.out.println("------------------------------------1--------------------------------");
@@ -39,19 +40,49 @@ public class Solution_1 {
 		List<String> departmentList = employeeList.stream().map(Employee::getDepartment).distinct().collect(Collectors.toList());
 		System.out.println(departmentList);
 		
-		// what is the average age of male and female employees
+		// Count the number of employees in each department
 		System.out.println("------------------------------------3--------------------------------");
+		employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting())).entrySet().forEach(entry-> System.out.println(entry.getKey()+"------------"+entry.getValue()));;
+		
+		// what is the average age of male and female employees
+		System.out.println("------------------------------------4--------------------------------");
 		employeeList.stream().collect(Collectors.groupingBy(Employee::getGender, Collectors.averagingInt(Employee::getAge))).entrySet().forEach(entry-> System.out.println(entry.getKey()+"------------"+entry.getValue()));
 		
 		// Get the details of highest paying employee of the org
-		System.out.println("------------------------------------4--------------------------------");
+		System.out.println("------------------------------------5--------------------------------");
 		Employee emp = employeeList.stream().collect(Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))).orElse(null);
 		System.out.println(emp);
 		
 		// Get the names of employee who have joined after 2015
-		System.out.println("------------------------------------5--------------------------------");
+		System.out.println("------------------------------------6--------------------------------");
 		List<String> nameList = employeeList.stream().filter(emp1-> emp1.getYearOfJoining() > 2015).map(Employee::getName).collect(Collectors.toList());
 		System.out.println(nameList);
+		
+		// Get the average salary from each department
+		System.out.println("------------------------------------7--------------------------------");
+		employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary))).entrySet().forEach(entry-> System.out.println(entry.getKey()+"------------"+entry.getValue()));
+		
+		// Get the details of youngest male employee in the product development department
+		System.out.println("------------------------------------8--------------------------------");
+		Employee youngestEmployee = employeeList.stream().filter(employee-> employee.getDepartment().equalsIgnoreCase("Product Development") && employee.getGender().equalsIgnoreCase("male")).sorted(Comparator.comparingInt(Employee::getAge)).findFirst().orElse(null);
+		System.out.println(youngestEmployee);
+		
+		// Who has most working experience in Org
+		System.out.println("------------------------------------9--------------------------------");
+		Employee mostExpEmployee = employeeList.stream().sorted(Comparator.comparingInt(Employee::getYearOfJoining)).findFirst().orElse(null);
+		System.out.println(mostExpEmployee);
+		
+		// List down all employee names from each department
+		System.out.println("------------------------------------10--------------------------------");
+		Map<String, List<Employee>> empListDept = employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
+		empListDept.entrySet().forEach(entry-> {
+			System.out.println(entry.getKey());
+			System.out.println("---------------------------------------");
+			entry.getValue().stream().map(Employee::getName).forEach(System.out::println);
+		});
+		
+
+		
 	}
 
 }
