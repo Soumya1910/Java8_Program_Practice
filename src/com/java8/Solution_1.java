@@ -2,6 +2,7 @@ package com.java8;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,7 +82,26 @@ public class Solution_1 {
 			entry.getValue().stream().map(Employee::getName).forEach(System.out::println);
 		});
 		
-
+		// What is the average and total salary in org
+		System.out.println("------------------------------------11--------------------------------");
+		DoubleSummaryStatistics salary_statistics = employeeList.stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+		System.out.println("Average Salary : "+salary_statistics.getAverage());
+		System.out.println("Total Salary : "+salary_statistics.getSum());
+		
+		// Separate all the employees who are younger or equals to 25 and senior than 25 years
+		System.out.println("------------------------------------12--------------------------------");
+		Map<Boolean, List<Employee>> partition_employee = employeeList.stream().collect(Collectors.partitioningBy(e-> e.getAge()> 25));
+		partition_employee.entrySet().forEach(entry-> {
+			if(entry.getKey()) {
+				System.out.println("Persons above 25 years");
+				System.out.println("----------------------------------------");
+			}
+			else {
+				System.out.println("Persons below 25 years");
+				System.out.println("----------------------------------------");
+			}
+			entry.getValue().stream().map(Employee::getName).forEach(System.out::println);
+		});
 		
 	}
 
