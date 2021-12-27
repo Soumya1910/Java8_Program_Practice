@@ -1,11 +1,10 @@
 package com.java8;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Solution_1 {
 
@@ -102,7 +101,33 @@ public class Solution_1 {
 			}
 			entry.getValue().stream().map(Employee::getName).forEach(System.out::println);
 		});
-		
+
+
+		// Merge two sorted or unsorted array and remove duplicate
+		System.out.println("------------------------------------13--------------------------------");
+		int[] arr1 = new int[]{10,-7,8,12,5};
+		int[] arr2 = new int[]{1,3,5,7,9,11,13};
+		int[] ints = IntStream.concat(IntStream.of(arr1), IntStream.of(arr2))
+				.distinct()
+				.sorted()
+				.toArray();
+		IntStream.of(ints).forEach(System.out::println);
+
+		// Reverse an array
+		System.out.println("------------------------------------14--------------------------------");
+		int[] arr3 = new int[]{1,3,5,7,9,11,13};
+		List<Integer> reverseArray = IntStream.range(0, arr3.length).mapToObj(e -> arr3[arr3.length - 1 - e]).collect(Collectors.toList());
+		System.out.println(reverseArray);
+
+		// Most Frequent element in an array
+		int[] arr4 = new int[]{4,5,8,7,4,7,6,7};
+		HashMap<Integer, Integer> frequencyMap = new HashMap<>();
+		for(int i=0; i< arr4.length; i++){
+			frequencyMap.put(arr4[i], frequencyMap.containsKey(arr4[i])? frequencyMap.get(arr4[i])+1: 1);
+		}
+		LinkedHashMap<Integer, Integer> collect = frequencyMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+		//Optional<Integer> first = collect.keySet().stream().findFirst().;
+		System.out.println(collect);
 	}
 
 }

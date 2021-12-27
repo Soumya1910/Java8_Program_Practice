@@ -1,6 +1,7 @@
 # Java8_Program_Practice
 This repo contains lot of Java 8 related practical problem statement and solution
 
+## Object Related Problem
 ### How many male and female employees are there in org?
 ```Java
 employeeList.stream().collect(Collectors.groupingBy(Employee::getGender, Collectors.counting()));
@@ -77,3 +78,48 @@ Map<Boolean, List<Employee>> partition_employee = employeeList.stream().collect(
 		});
 ```
 
+## Array related problem statement
+### Merge two sorted or unsorted array and remove duplicate
+```java
+int[] ints = IntStream.concat(IntStream.of(arr1), IntStream.of(arr2))
+				.distinct()
+				.sorted()
+				.toArray();
+```
+
+### Reverse an array
+```java
+List<Integer> reverseArray = IntStream.range(0, arr3.length).mapToObj(e -> arr3[arr3.length - 1 - e]).collect(Collectors.toList());
+```
+
+## Map related problem statement
+### Sort map based on key
+```Java
+LinkedHashMap<String, Integer> keySortedMap = map.entrySet()
+        .stream().sorted(Map.Entry.comparingByKey())
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+```
+
+### Sort map based on Value
+```Java
+Map<String, Integer> valueSortedMap = map.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue)-> newValue, LinkedHashMap::new));
+```
+
+### Merge two maps: consider highest value if keys are same
+```Java
+HashMap<String, Integer> subjectMarks1 = new HashMap<>();
+        subjectMarks1.put("Bengali", 75);
+        subjectMarks1.put("English", 80);
+        subjectMarks1.put("Math", 95);
+
+        HashMap<String, Integer> subjectMarks2 = new HashMap<>();
+        subjectMarks2.put("Economics", 75);
+        subjectMarks2.put("English", 80);
+        subjectMarks2.put("Math", 90);
+        subjectMarks2.put("Science", 95);
+        
+        subjectMarks1.forEach((key, value)-> subjectMarks2.merge(key, value, (v1, v2)-> v1>v2? v1: v2));
+        System.out.println(subjectMarks2);
+```
