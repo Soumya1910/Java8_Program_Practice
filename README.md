@@ -1,6 +1,12 @@
 # Java8_Program_Practice
 This repo contains lot of Java 8 related practical problem statement and solution
 
+### You are given a list of String. You need to find the frequency of each word
+```Java
+Map<String, Long> stringFrequency = list.stream()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    stringFrequency.forEach((k,v) -> System.out.println(k+"--> "+v));
+```
 ## Object Related Problem
 ### How many male and female employees are there in org?
 ```Java
