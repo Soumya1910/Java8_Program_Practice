@@ -129,3 +129,4 @@ HashMap<String, Integer> subjectMarks1 = new HashMap<>();
         subjectMarks1.forEach((key, value)-> subjectMarks2.merge(key, value, (v1, v2)-> v1>v2? v1: v2));
         System.out.println(subjectMarks2);
 ```
+
